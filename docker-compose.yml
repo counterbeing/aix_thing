@@ -1,6 +1,5 @@
-version: '3.7'
+version: "3.7"
 services:
-
   web:
     image: ansible/awx_web
     container_name: awx_web
@@ -20,8 +19,9 @@ services:
       - ./docker/awx/SECRET_KEY:/etc/tower/SECRET_KEY
       - ./docker/awx/environment.sh:/etc/tower/conf.d/environment.sh
       - ./docker/awx/credentials.py:/etc/tower/conf.d/credentials.py
-      # - "/docker/awx/projects:/var/lib/awx/projects:rw"
-#      - "/docker/awx/ca-trust:/etc/pki/ca-trust/source/anchors:ro"
+      - ./docker/awx/projects:/var/lib/awx/projects:rw
+      - ./docker/awx/ca-trust:/etc/pki/ca-trust/source/anchors:ro
+
   task:
     image: ansible/awx_task
     container_name: awx_task
@@ -37,8 +37,8 @@ services:
       - ./docker/awx/SECRET_KEY:/etc/tower/SECRET_KEY
       - ./docker/awx/environment.sh:/etc/tower/conf.d/environment.sh
       - ./docker/awx/credentials.py:/etc/tower/conf.d/credentials.py
-      # - "/docker/awx/projects:/var/lib/awx/projects:rw"
-#      - "/docker/awx/ca-trust:/etc/pki/ca-trust/source/anchors:ro"
+      - ./docker/awx/projects:/var/lib/awx/projects:rw
+      - ./docker/awx/ca-trust:/etc/pki/ca-trust/source/anchors:ro
     environment:
       DATABASE_USER: "awx"
       DATABASE_NAME: "awx"
@@ -49,7 +49,7 @@ services:
       RABBITMQ_HOST: "rabbitmq"
       AWX_ADMIN_USER: "admin"
       AWX_ADMIN_PASSWORD: "changeme"
-  
+
   rabbitmq:
     image: ansible/awx_rabbitmq
     container_name: awx_rabbitmq
@@ -82,5 +82,3 @@ services:
 
 volumes:
   db_volume:
-
-
